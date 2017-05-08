@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas Sun Demo</title>
+	<style>
+		div{
+			margin: 0;
+			padding: 0;
+		}
+		canvas{
+			border: 1px solid #000;
+		}
+	</style>
+	<script>
+		var imgs ={sun:null,moon:null,earch:null};
+
+		window.onload=function () {
+			for(var i in imgs){
+				// alert(i);
+				imgs[i]=document.getElementById(i+'');
+				setInterval(draw, 100);
+			}
+				// console.log(imgs);
+		};
+
+		function draw () {
+
+			var time=new Date();
+			var s = ( (2*Math.PI)/6) * time.getSeconds();
+			var m = ( (2*Math.PI)/6000) * time.getMilliseconds()
+			// alert(m);
+			// alert(s);
+			var ctx=document.getElementById('canvas').getContext('2d');
+
+			ctx.clearRect(0,0,300,300);
+			ctx.globalCompositeOperation="destination-over";
+			ctx.save();
+
+			ctx.translate(150,150);
+			ctx.rotate((s+m) /10 );
+			// console.log('s+m/10"= '+ (s+ m)/10);
+			ctx.translate(105,0);
+
+
+			// ctx.fillStyle= 'rgba(0,0,0,.4)';
+			// ctx.strokeStyle='rgba(0, 153, 255, .4)';
+
+			// ctx.fillRect(0, -12, 50, 24);
+
+			ctx.drawImage(imgs.earch, -12, -12);
+			ctx.save()
+
+				ctx.rotate(s+m);
+				ctx.translate(0,28.5);
+
+				ctx.drawImage(imgs.moon, -3.5,-3.5);
+				ctx.restore();
+			ctx.restore();
+
+			ctx.beginPath();
+			ctx.arc(150,150,105,0,Math.PI/2,false);
+			ctx.stroke();
+
+			ctx.drawImage(imgs.sun,0,0);
+
+
+		}
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width="300" height="300"></canvas>
+
+	<div style="display:none;">
+		<img src="sun.png" id="sun" alt="">
+		<img src="moon.png" id="moon" alt="">
+		<img src="earch.png" id="earch" alt="">
+	</div>
+</body>
+</html>
